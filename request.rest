@@ -1,0 +1,10 @@
+### Variables
+@baseUrl = http://localhost:3000
+
+### GET Welcome endpoint
+GET {{baseUrl}}/
+Content-Type: application/json
+
+### GET Health check endpoint
+GET {{baseUrl}}/health
+Content-Type: application/json
