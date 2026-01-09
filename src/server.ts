@@ -1,5 +1,6 @@
+import 'dotenv/config';
 import express, { Request, Response } from 'express';
-
+import { connectDB } from './config/database.js';
 const app = express();
 const PORT: number = Number(process.env.PORT) || 3000;
 
@@ -15,10 +16,20 @@ app.get('/', (_req: Request, res: Response) => {
 });
 
 app.get('/health', (_req: Request, res: Response) => {
-  res.json({ status: 'ok', nodeVersion: process.version });
+  res.json({ status: 'ok' });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📦 Node.js version: ${process.version}`);
-});
+export const startServer = async (): Promise<void> => {
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on http://localhost:${PORT}`);
+      console.log(`📦 Node.js version: ${process.version}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
