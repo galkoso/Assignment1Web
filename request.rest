@@ -8,3 +8,18 @@ Content-Type: application/json
 ### GET Health check endpoint
 GET {{baseUrl}}/health
 Content-Type: application/json
+
+### POST Add a new post
+POST {{baseUrl}}/api/posts
+Content-Type: application/json
+
+{
+  "title": "My First Post",
+  "content": "This is the content of my first post.",
+  "author": "John Doe",
+  "publishDate": "2024-01-15T10:00:00.000Z"
+}
+
+### GET Get all posts
+GET {{baseUrl}}/api/posts
+Content-Type: application/json
