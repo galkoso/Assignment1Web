@@ -5,9 +5,9 @@ const MONGODB_URI: string = process.env.MONGODB_URI || 'mongodb://localhost:2701
 export const connectDB = async (): Promise<void> => {
   try {
     await mongoose.connect(MONGODB_URI);
-    console.log(`✅ MongoDB Connected`);
+    console.log(`MongoDB Connected`);
   } catch (error) {
-    console.error('❌ MongoDB connection error:', error);
+    console.error('MongoDB connection error:', error);
     process.exit(1);
   }
 };

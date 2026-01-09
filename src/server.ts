@@ -23,8 +23,8 @@ export const startServer = async (): Promise<void> => {
   try {
     await connectDB();
     app.listen(PORT, () => {
-      console.log(`🚀 Server running on http://localhost:${PORT}`);
-      console.log(`📦 Node.js version: ${process.version}`);
+      console.log(`Server running on http://localhost:${PORT}`);
+      console.log(`Node.js version: ${process.version}`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);
