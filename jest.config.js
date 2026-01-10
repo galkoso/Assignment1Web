@@ -18,5 +18,6 @@ export default {
     'src/**/*.ts',
     '!src/**/*.d.ts',
   ],
+  maxWorkers: 1,
 };
 
