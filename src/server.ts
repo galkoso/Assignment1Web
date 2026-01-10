@@ -12,14 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/posts', postRouter);
 
-app.get('/', (_req: Request, res: Response) => {
-  res.json({
-    message: 'Welcome',
-    nodeVersion: process.version,
-    timestamp: new Date().toISOString()
-  });
-});
-
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok' });
 });

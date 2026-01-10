@@ -23,3 +23,22 @@ Content-Type: application/json
 ### GET Get all posts
 GET {{baseUrl}}/api/posts
 Content-Type: application/json
+
+### GET Get a post by ID
+GET {{baseUrl}}/api/posts/507f1f77bcf86cd799439011
+Content-Type: application/json
+
+### GET Get posts by sender
+GET {{baseUrl}}/api/posts?sender=John Doe
+Content-Type: application/json
+
+### PUT Update a post
+PUT {{baseUrl}}/api/posts/507f1f77bcf86cd799439011
+Content-Type: application/json
+
+{
+  "title": "Updated Post Title",
+  "content": "This is the updated content of the post.",
+  "author": "John Doe",
+  "publishDate": "2024-01-20T10:00:00.000Z"
+}
