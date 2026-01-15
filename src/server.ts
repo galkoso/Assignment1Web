@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import { connectDB } from './config/database.js';
 import postRouter from './router/posts/post.router.js';
+import commentsRouter from './router/comments/comment.router.js';
 
 const app = express();
 const PORT: number = Number(process.env.PORT) || 3000;
@@ -11,14 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use('/api/posts', postRouter);
-
-app.get('/', (_req: Request, res: Response) => {
-  res.json({
-    message: 'Welcome',
-    nodeVersion: process.version,
-    timestamp: new Date().toISOString()
-  });
-});
+app.use('/api/comments', commentsRouter);
 
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok' });
