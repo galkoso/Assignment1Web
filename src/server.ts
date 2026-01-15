@@ -1,8 +1,9 @@
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
-import { connectDB } from './config/database.js';
-import postRouter from './router/posts/post.router.js';
-import commentsRouter from './router/comments/comment.router.js';
+import { StatusCodes } from 'http-status-codes';
+import { connectDB } from './config/database';
+import postRouter from './router/posts/post.router';
+import commentsRouter from './router/comments/comment.router';
 
 const app = express();
 const PORT: number = Number(process.env.PORT) || 3000;
@@ -15,7 +16,7 @@ app.use('/api/posts', postRouter);
 app.use('/api/comments', commentsRouter);
 
 app.get('/health', (_req: Request, res: Response) => {
-  res.json({ status: 'ok' });
+  res.status(StatusCodes.OK).json({ status: 'ok' });
 });
 
 export const startServer = async (): Promise<void> => {

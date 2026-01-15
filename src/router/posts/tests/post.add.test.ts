@@ -1,8 +1,16 @@
 import request from 'supertest';
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
-import postRouter from '../post.router.js';
-import { Post } from '../post.model.js';
+import { StatusCodes } from 'http-status-codes';
+import postRouter from '../post.router';
+import { Post } from '../post.model';
+import {
+    mockPostData,
+    mockPostDataWithoutPublishDate,
+    mockPostWithoutTitle,
+    mockPostWithoutContent,
+    mockPostWithoutAuthor
+} from '../../mocks';
 
 describe('POST /api/posts - Add a new post', () => {
   let app: Express;
@@ -24,17 +32,12 @@ describe('POST /api/posts - Add a new post', () => {
   });
 
   it('should create a new post successfully', async () => {
-    const postData = {
-      title: 'Test Post',
-      content: 'This is a test post content',
-      author: 'Test Author',
-      publishDate: new Date('2024-01-15')
-    };
+    const postData = mockPostData;
 
     const response = await request(app)
       .post('/api/posts')
       .send(postData)
-      .expect(201);
+      .expect(StatusCodes.CREATED);
 
     expect(response.body).toHaveProperty('message', 'Post created successfully');
     expect(response.body).toHaveProperty('data');
@@ -46,55 +49,39 @@ describe('POST /api/posts - Add a new post', () => {
   });
 
   it('should fail when title is missing', async () => {
-    const postData = {
-      content: 'This is a test post content',
-      author: 'Test Author',
-      publishDate: new Date('2024-01-15')
-    };
+    const postData = mockPostWithoutTitle;
 
     await request(app)
       .post('/api/posts')
       .send(postData)
-      .expect(500);
+      .expect(StatusCodes.INTERNAL_SERVER_ERROR);
   });
 
   it('should fail when content is missing', async () => {
-    const postData = {
-      title: 'Test Post',
-      author: 'Test Author',
-      publishDate: new Date('2024-01-15')
-    };
+    const postData = mockPostWithoutContent;
 
     await request(app)
       .post('/api/posts')
       .send(postData)
-      .expect(500);
+      .expect(StatusCodes.INTERNAL_SERVER_ERROR);
   });
 
   it('should fail when author is missing', async () => {
-    const postData = {
-      title: 'Test Post',
-      content: 'This is a test post content',
-      publishDate: new Date('2024-01-15')
-    };
+    const postData = mockPostWithoutAuthor;
 
     await request(app)
       .post('/api/posts')
       .send(postData)
-      .expect(500);
+      .expect(StatusCodes.INTERNAL_SERVER_ERROR);
   });
 
   it('should use default publishDate when not provided', async () => {
-    const postData = {
-      title: 'Test Post',
-      content: 'This is a test post content',
-      author: 'Test Author'
-    };
+    const postData = mockPostDataWithoutPublishDate;
 
     const response = await request(app)
       .post('/api/posts')
       .send(postData)
-      .expect(201);
+      .expect(StatusCodes.CREATED);
 
     expect(response.body.data).toHaveProperty('publishDate');
     expect(new Date(response.body.data.publishDate)).toBeInstanceOf(Date);

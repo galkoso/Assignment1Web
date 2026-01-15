@@ -1,8 +1,15 @@
 import request from 'supertest';
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
-import postRouter from '../post.router.js';
-import { Post } from '../post.model.js';
+import { StatusCodes } from 'http-status-codes';
+import postRouter from '../post.router';
+import { Post } from '../post.model';
+import {
+    mockPostMultiple,
+    mockPostOlder,
+    mockPostNewer,
+    mockPost
+} from '../../mocks';
 
 describe('GET /api/posts - Get all posts', () => {
   let app: Express;
@@ -26,28 +33,18 @@ describe('GET /api/posts - Get all posts', () => {
   it('should return empty array when no posts exist', async () => {
     const response = await request(app)
       .get('/api/posts')
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body).toHaveProperty('data');
     expect(response.body.data).toEqual([]);
   });
 
   it('should return all posts as JSON array', async () => {
-    await Post.insertMany([{
-      title: 'First Post',
-      content: 'Content of first post',
-      author: 'Author 1',
-      publishDate: new Date('2024-01-15')
-    }, {
-      title: 'Second Post',
-      content: 'Content of second post',
-      author: 'Author 2',
-      publishDate: new Date('2024-01-16')
-    }]);
+    await Post.insertMany(mockPostMultiple);
 
     const response = await request(app)
       .get('/api/posts')
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body).toHaveProperty('data');
     expect(Array.isArray(response.body.data)).toBe(true);
@@ -55,21 +52,11 @@ describe('GET /api/posts - Get all posts', () => {
   });
 
   it('should return posts sorted by publishDate descending (newest first)', async () => {
-    await Post.insertMany([{
-      title: 'Older Post',
-      content: 'Older content',
-      author: 'Author 1',
-      publishDate: new Date('2024-01-10')
-    }, {
-      title: 'Newer Post',
-      content: 'Newer content',
-      author: 'Author 2',
-      publishDate: new Date('2024-01-20')
-    }]);
+    await Post.insertMany([mockPostOlder, mockPostNewer]);
 
     const response = await request(app)
       .get('/api/posts')
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body.data.length).toBe(2);
     expect(response.body.data[0].title).toBe('Newer Post');
@@ -77,16 +64,11 @@ describe('GET /api/posts - Get all posts', () => {
   });
 
   it('should return posts with all required fields', async () => {
-    await Post.insertMany([{    
-      title: 'Test Post',
-      content: 'Test content',
-      author: 'Test Author',
-      publishDate: new Date('2024-01-15')
-    }]);
+    await Post.insertMany([mockPost]);
 
     const response = await request(app)
       .get('/api/posts')
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body.data.length).toBeGreaterThanOrEqual(1);
     const post = response.body.data[0];

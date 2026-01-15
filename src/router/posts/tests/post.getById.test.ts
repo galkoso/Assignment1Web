@@ -1,8 +1,13 @@
 import request from 'supertest';
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
-import postRouter from '../post.router.js';
-import { Post } from '../post.model.js';
+import { StatusCodes } from 'http-status-codes';
+import postRouter from '../post.router';
+import { Post } from '../post.model';
+import {
+    mockPostData,
+    mockPostComplete
+} from '../../mocks';
 
 describe('GET /api/posts/:postId - Get a post by ID', () => {
   let app: Express;
@@ -24,21 +29,16 @@ describe('GET /api/posts/:postId - Get a post by ID', () => {
   });
 
   it('should return a post when valid ID is provided', async () => {
-    const createdPost = await Post.create({
-      title: 'Test Post',
-      content: 'This is a test post content',
-      author: 'Test Author',
-      publishDate: new Date('2024-01-15')
-    });
+    const createdPost = await Post.create(mockPostData);
 
     const response = await request(app)
       .get(`/api/posts/${createdPost._id.toString()}`)
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body).toHaveProperty('post');
-    expect(response.body.post).toHaveProperty('title', 'Test Post');
-    expect(response.body.post).toHaveProperty('content', 'This is a test post content');
-    expect(response.body.post).toHaveProperty('author', 'Test Author');
+    expect(response.body.post).toHaveProperty('title', mockPostData.title);
+    expect(response.body.post).toHaveProperty('content', mockPostData.content);
+    expect(response.body.post).toHaveProperty('author', mockPostData.author);
     expect(response.body.post).toHaveProperty('_id', createdPost._id.toString());
   });
 
@@ -47,7 +47,7 @@ describe('GET /api/posts/:postId - Get a post by ID', () => {
 
     const response = await request(app)
       .get(`/api/posts/${fakeId.toString()}`)
-      .expect(404);
+      .expect(StatusCodes.NOT_FOUND);
 
     expect(response.body).toHaveProperty('error', 'Post not found');
   });
@@ -55,22 +55,17 @@ describe('GET /api/posts/:postId - Get a post by ID', () => {
   it('should return 500 when invalid ID format is provided', async () => {
     const response = await request(app)
       .get('/api/posts/invalid-id')
-      .expect(500);
+      .expect(StatusCodes.INTERNAL_SERVER_ERROR);
 
     expect(response.body).toHaveProperty('error', 'Failed to fetch post');
   });
 
   it('should return post with all required fields', async () => {
-    const createdPost = await Post.create({
-      title: 'Complete Post',
-      content: 'Complete content',
-      author: 'Complete Author',
-      publishDate: new Date('2024-01-15')
-    });
+    const createdPost = await Post.create(mockPostComplete);
 
     const response = await request(app)
       .get(`/api/posts/${createdPost._id.toString()}`)
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     const post = response.body.post;
     expect(post).toHaveProperty('title');

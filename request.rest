@@ -32,13 +32,32 @@ Content-Type: application/json
 GET {{baseUrl}}/api/posts?sender=John Doe
 Content-Type: application/json
 
-### PUT Update a post
-PUT {{baseUrl}}/api/posts/507f1f77bcf86cd799439011
+### POST Create a new comment
+POST {{baseUrl}}/api/comments
 Content-Type: application/json
 
 {
-  "title": "Updated Post Title",
-  "content": "This is the updated content of the post.",
-  "author": "John Doe",
-  "publishDate": "2024-01-20T10:00:00.000Z"
+  "owner": "Jane Smith",
+  "postId": "507f1f77bcf86cd799439011",
+  "content": "This is a great post!"
 }
+
+### GET Get a comment by ID
+GET {{baseUrl}}/api/comments/507f1f77bcf86cd799439011
+Content-Type: application/json
+
+### GET Get all comments for a specific post
+GET {{baseUrl}}/api/comments/post/507f1f77bcf86cd799439011
+Content-Type: application/json
+
+### PUT Update a comment
+PUT {{baseUrl}}/api/comments/507f1f77bcf86cd799439011
+Content-Type: application/json
+
+{
+  "content": "Updated comment content"
+}
+
+### DELETE Delete a comment
+DELETE {{baseUrl}}/api/comments/507f1f77bcf86cd799439011
+Content-Type: application/json
