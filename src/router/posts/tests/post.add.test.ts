@@ -3,6 +3,13 @@ import express, { Express } from 'express';
 import mongoose from 'mongoose';
 import postRouter from '../post.router.js';
 import { Post } from '../post.model.js';
+import {
+    mockPostData,
+    mockPostDataWithoutPublishDate,
+    mockPostWithoutTitle,
+    mockPostWithoutContent,
+    mockPostWithoutAuthor
+} from '../../mocks.js';
 
 describe('POST /api/posts - Add a new post', () => {
   let app: Express;
@@ -24,12 +31,7 @@ describe('POST /api/posts - Add a new post', () => {
   });
 
   it('should create a new post successfully', async () => {
-    const postData = {
-      title: 'Test Post',
-      content: 'This is a test post content',
-      author: 'Test Author',
-      publishDate: new Date('2024-01-15')
-    };
+    const postData = mockPostData;
 
     const response = await request(app)
       .post('/api/posts')
@@ -46,11 +48,7 @@ describe('POST /api/posts - Add a new post', () => {
   });
 
   it('should fail when title is missing', async () => {
-    const postData = {
-      content: 'This is a test post content',
-      author: 'Test Author',
-      publishDate: new Date('2024-01-15')
-    };
+    const postData = mockPostWithoutTitle;
 
     await request(app)
       .post('/api/posts')
@@ -59,11 +57,7 @@ describe('POST /api/posts - Add a new post', () => {
   });
 
   it('should fail when content is missing', async () => {
-    const postData = {
-      title: 'Test Post',
-      author: 'Test Author',
-      publishDate: new Date('2024-01-15')
-    };
+    const postData = mockPostWithoutContent;
 
     await request(app)
       .post('/api/posts')
@@ -72,11 +66,7 @@ describe('POST /api/posts - Add a new post', () => {
   });
 
   it('should fail when author is missing', async () => {
-    const postData = {
-      title: 'Test Post',
-      content: 'This is a test post content',
-      publishDate: new Date('2024-01-15')
-    };
+    const postData = mockPostWithoutAuthor;
 
     await request(app)
       .post('/api/posts')
@@ -85,11 +75,7 @@ describe('POST /api/posts - Add a new post', () => {
   });
 
   it('should use default publishDate when not provided', async () => {
-    const postData = {
-      title: 'Test Post',
-      content: 'This is a test post content',
-      author: 'Test Author'
-    };
+    const postData = mockPostDataWithoutPublishDate;
 
     const response = await request(app)
       .post('/api/posts')

@@ -3,6 +3,10 @@ import express, { Express } from 'express';
 import mongoose from 'mongoose';
 import postRouter from '../post.router.js';
 import { Post } from '../post.model.js';
+import {
+    mockPostData,
+    mockPostComplete
+} from '../../mocks.js';
 
 describe('GET /api/posts/:postId - Get a post by ID', () => {
   let app: Express;
@@ -24,21 +28,16 @@ describe('GET /api/posts/:postId - Get a post by ID', () => {
   });
 
   it('should return a post when valid ID is provided', async () => {
-    const createdPost = await Post.create({
-      title: 'Test Post',
-      content: 'This is a test post content',
-      author: 'Test Author',
-      publishDate: new Date('2024-01-15')
-    });
+    const createdPost = await Post.create(mockPostData);
 
     const response = await request(app)
       .get(`/api/posts/${createdPost._id.toString()}`)
       .expect(200);
 
     expect(response.body).toHaveProperty('post');
-    expect(response.body.post).toHaveProperty('title', 'Test Post');
-    expect(response.body.post).toHaveProperty('content', 'This is a test post content');
-    expect(response.body.post).toHaveProperty('author', 'Test Author');
+    expect(response.body.post).toHaveProperty('title', mockPostData.title);
+    expect(response.body.post).toHaveProperty('content', mockPostData.content);
+    expect(response.body.post).toHaveProperty('author', mockPostData.author);
     expect(response.body.post).toHaveProperty('_id', createdPost._id.toString());
   });
 
@@ -61,12 +60,7 @@ describe('GET /api/posts/:postId - Get a post by ID', () => {
   });
 
   it('should return post with all required fields', async () => {
-    const createdPost = await Post.create({
-      title: 'Complete Post',
-      content: 'Complete content',
-      author: 'Complete Author',
-      publishDate: new Date('2024-01-15')
-    });
+    const createdPost = await Post.create(mockPostComplete);
 
     const response = await request(app)
       .get(`/api/posts/${createdPost._id.toString()}`)

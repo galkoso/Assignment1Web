@@ -3,6 +3,15 @@ import express, { Express } from 'express';
 import mongoose from 'mongoose';
 import postRouter from '../post.router.js';
 import { Post } from '../post.model.js';
+import {
+    mockPostByJohn,
+    mockPostByJane,
+    mockPostAnotherByJohn,
+    mockPostOlderByJohn,
+    mockPostNewerByJohn,
+    mockPostWithSpaces,
+    mockPostMultiple
+} from '../../mocks.js';
 
 describe('GET /api/posts?sender=<sender_id> - Get posts by sender', () => {
   let app: Express;
@@ -25,24 +34,9 @@ describe('GET /api/posts?sender=<sender_id> - Get posts by sender', () => {
 
   it('should return only posts from the specified sender', async () => {
     await Post.insertMany([
-      {
-        title: 'Post by John',
-        content: 'Content by John',
-        author: 'John Doe',
-        publishDate: new Date('2024-01-15')
-      },
-      {
-        title: 'Post by Jane',
-        content: 'Content by Jane',
-        author: 'Jane Doe',
-        publishDate: new Date('2024-01-16')
-      },
-      {
-        title: 'Another Post by John',
-        content: 'Another content by John',
-        author: 'John Doe',
-        publishDate: new Date('2024-01-17')
-      }
+      mockPostByJohn,
+      mockPostByJane,
+      mockPostAnotherByJohn
     ]);
 
     const response = await request(app)
@@ -58,14 +52,7 @@ describe('GET /api/posts?sender=<sender_id> - Get posts by sender', () => {
   });
 
   it('should return empty array when sender has no posts', async () => {
-    await Post.insertMany([
-      {
-        title: 'Post by John',
-        content: 'Content by John',
-        author: 'John Doe',
-        publishDate: new Date('2024-01-15')
-      }
-    ]);
+    await Post.insertMany([mockPostByJohn]);
 
     const response = await request(app)
       .get('/api/posts?sender=NonExistent Author')
@@ -77,18 +64,8 @@ describe('GET /api/posts?sender=<sender_id> - Get posts by sender', () => {
 
   it('should return posts sorted by publishDate descending', async () => {
     await Post.insertMany([
-      {
-        title: 'Older Post by John',
-        content: 'Older content',
-        author: 'John Doe',
-        publishDate: new Date('2024-01-10')
-      },
-      {
-        title: 'Newer Post by John',
-        content: 'Newer content',
-        author: 'John Doe',
-        publishDate: new Date('2024-01-20')
-      }
+      mockPostOlderByJohn,
+      mockPostNewerByJohn
     ]);
 
     const response = await request(app)
@@ -101,20 +78,7 @@ describe('GET /api/posts?sender=<sender_id> - Get posts by sender', () => {
   });
 
   it('should return all posts when sender query parameter is not provided', async () => {
-    await Post.insertMany([
-      {
-        title: 'Post by John',
-        content: 'Content by John',
-        author: 'John Doe',
-        publishDate: new Date('2024-01-15')
-      },
-      {
-        title: 'Post by Jane',
-        content: 'Content by Jane',
-        author: 'Jane Doe',
-        publishDate: new Date('2024-01-16')
-      }
-    ]);
+    await Post.insertMany(mockPostMultiple);
 
     const response = await request(app)
       .get('/api/posts')
@@ -124,14 +88,7 @@ describe('GET /api/posts?sender=<sender_id> - Get posts by sender', () => {
   });
 
   it('should handle sender query parameter with special characters', async () => {
-    await Post.insertMany([
-      {
-        title: 'Post by Author with Spaces',
-        content: 'Content',
-        author: 'Author with Spaces',
-        publishDate: new Date('2024-01-15')
-      }
-    ]);
+    await Post.insertMany([mockPostWithSpaces]);
 
     const response = await request(app)
       .get('/api/posts?sender=Author with Spaces')

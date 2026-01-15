@@ -3,6 +3,12 @@ import express, { Express } from 'express';
 import mongoose from 'mongoose';
 import postRouter from '../post.router.js';
 import { Post } from '../post.model.js';
+import {
+    mockPostOriginal,
+    mockPostUpdated,
+    mockPostUpdatedPartial,
+    mockPostUpdatedTitleOnly
+} from '../../mocks.js';
 
 describe('PUT /api/posts/:postId - Update a post', () => {
   let app: Express;
@@ -24,19 +30,9 @@ describe('PUT /api/posts/:postId - Update a post', () => {
   });
 
   it('should update a post successfully with all fields', async () => {
-    const createdPost = await Post.create({
-      title: 'Original Title',
-      content: 'Original content',
-      author: 'Original Author',
-      publishDate: new Date('2024-01-15')
-    });
+    const createdPost = await Post.create(mockPostOriginal);
 
-    const updateData = {
-      title: 'Updated Title',
-      content: 'Updated content',
-      author: 'Updated Author',
-      publishDate: new Date('2024-01-20')
-    };
+    const updateData = mockPostUpdated;
 
     const response = await request(app)
       .put(`/api/posts/${createdPost._id.toString()}`)
@@ -53,12 +49,7 @@ describe('PUT /api/posts/:postId - Update a post', () => {
 
   it('should return 404 when post ID does not exist', async () => {
     const fakeId = new mongoose.Types.ObjectId();
-    const updateData = {
-      title: 'Updated Title',
-      content: 'Updated content',
-      author: 'Updated Author',
-      publishDate: new Date('2024-01-20')
-    };
+    const updateData = mockPostUpdated;
 
     const response = await request(app)
       .put(`/api/posts/${fakeId.toString()}`)
@@ -69,19 +60,9 @@ describe('PUT /api/posts/:postId - Update a post', () => {
   });
 
   it('should update only provided fields', async () => {
-    const createdPost = await Post.create({
-      title: 'Original Title',
-      content: 'Original content',
-      author: 'Original Author',
-      publishDate: new Date('2024-01-15')
-    });
+    const createdPost = await Post.create(mockPostOriginal);
 
-    const updateData = {
-      title: 'Updated Title',
-      content: 'Updated content',
-      author: 'Original Author',
-      publishDate: new Date('2024-01-15')
-    };
+    const updateData = mockPostUpdatedPartial;
 
     const response = await request(app)
       .put(`/api/posts/${createdPost._id.toString()}`)
@@ -110,16 +91,9 @@ describe('PUT /api/posts/:postId - Update a post', () => {
   });
 
   it('should fail when required fields are missing', async () => {
-    const createdPost = await Post.create({
-      title: 'Original Title',
-      content: 'Original content',
-      author: 'Original Author',
-      publishDate: new Date('2024-01-15')
-    });
+    const createdPost = await Post.create(mockPostOriginal);
 
-    const updateData = {
-      title: 'Updated Title'
-    };
+    const updateData = mockPostUpdatedTitleOnly;
 
     await request(app)
       .put(`/api/posts/${createdPost._id.toString()}`)
@@ -128,21 +102,11 @@ describe('PUT /api/posts/:postId - Update a post', () => {
   });
 
   it('should maintain post ID after update', async () => {
-    const createdPost = await Post.create({
-      title: 'Original Title',
-      content: 'Original content',
-      author: 'Original Author',
-      publishDate: new Date('2024-01-15')
-    });
+    const createdPost = await Post.create(mockPostOriginal);
 
     const originalId = createdPost._id.toString();
 
-    const updateData = {
-      title: 'Updated Title',
-      content: 'Updated content',
-      author: 'Updated Author',
-      publishDate: new Date('2024-01-20')
-    };
+    const updateData = mockPostUpdated;
 
     const response = await request(app)
       .put(`/api/posts/${createdPost._id.toString()}`)

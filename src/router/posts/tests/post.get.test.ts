@@ -3,6 +3,12 @@ import express, { Express } from 'express';
 import mongoose from 'mongoose';
 import postRouter from '../post.router.js';
 import { Post } from '../post.model.js';
+import {
+    mockPostMultiple,
+    mockPostOlder,
+    mockPostNewer,
+    mockPost
+} from '../../mocks.js';
 
 describe('GET /api/posts - Get all posts', () => {
   let app: Express;
@@ -33,17 +39,7 @@ describe('GET /api/posts - Get all posts', () => {
   });
 
   it('should return all posts as JSON array', async () => {
-    await Post.insertMany([{
-      title: 'First Post',
-      content: 'Content of first post',
-      author: 'Author 1',
-      publishDate: new Date('2024-01-15')
-    }, {
-      title: 'Second Post',
-      content: 'Content of second post',
-      author: 'Author 2',
-      publishDate: new Date('2024-01-16')
-    }]);
+    await Post.insertMany(mockPostMultiple);
 
     const response = await request(app)
       .get('/api/posts')
@@ -55,17 +51,7 @@ describe('GET /api/posts - Get all posts', () => {
   });
 
   it('should return posts sorted by publishDate descending (newest first)', async () => {
-    await Post.insertMany([{
-      title: 'Older Post',
-      content: 'Older content',
-      author: 'Author 1',
-      publishDate: new Date('2024-01-10')
-    }, {
-      title: 'Newer Post',
-      content: 'Newer content',
-      author: 'Author 2',
-      publishDate: new Date('2024-01-20')
-    }]);
+    await Post.insertMany([mockPostOlder, mockPostNewer]);
 
     const response = await request(app)
       .get('/api/posts')
@@ -77,12 +63,7 @@ describe('GET /api/posts - Get all posts', () => {
   });
 
   it('should return posts with all required fields', async () => {
-    await Post.insertMany([{    
-      title: 'Test Post',
-      content: 'Test content',
-      author: 'Test Author',
-      publishDate: new Date('2024-01-15')
-    }]);
+    await Post.insertMany([mockPost]);
 
     const response = await request(app)
       .get('/api/posts')
