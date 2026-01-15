@@ -1,9 +1,10 @@
 import request from 'supertest';
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
-import commentRouter from '../comment.router.js';
-import { Comment } from '../comment.model.js';
-import { Post } from '../../posts/post.model.js';
+import { StatusCodes } from 'http-status-codes';
+import commentRouter from '../comment.router';
+import { Comment } from '../comment.model';
+import { Post } from '../../posts/post.model';
 import {
     mockPost,
     mockPostMultiple,
@@ -13,7 +14,7 @@ import {
     mockCommentForPost1,
     mockCommentForPost2,
     mockInvalidPostId
-} from '../../mocks.js';
+} from '../../mocks';
 
 describe('GET /api/comments/post/:postId - Get all comments for a post', () => {
     let app: Express;
@@ -40,7 +41,7 @@ describe('GET /api/comments/post/:postId - Get all comments for a post', () => {
 
         const response = await request(app)
             .get(`/api/comments/post/${post._id}`)
-            .expect(200);
+            .expect(StatusCodes.OK);
 
         expect(response.body).toHaveProperty('data');
         expect(response.body).toHaveProperty('count', 0);
@@ -59,7 +60,7 @@ describe('GET /api/comments/post/:postId - Get all comments for a post', () => {
 
         const response = await request(app)
             .get(`/api/comments/post/${post._id}`)
-            .expect(200);
+            .expect(StatusCodes.OK);
 
         expect(response.body).toHaveProperty('data');
         expect(response.body).toHaveProperty('count', 2);
@@ -82,7 +83,7 @@ describe('GET /api/comments/post/:postId - Get all comments for a post', () => {
 
         const response = await request(app)
             .get(`/api/comments/post/${post._id}`)
-            .expect(200);
+            .expect(StatusCodes.OK);
 
         expect(response.body.data.length).toBe(2);
         expect(response.body.data[0].content).toBe('Newer comment');
@@ -92,7 +93,7 @@ describe('GET /api/comments/post/:postId - Get all comments for a post', () => {
     it('should return 404 when post does not exist', async () => {
         await request(app)
             .get(`/api/comments/post/${mockInvalidPostId}`)
-            .expect(404);
+            .expect(StatusCodes.NOT_FOUND);
     });
 
     it('should only return comments for the specified post', async () => {
@@ -111,7 +112,7 @@ describe('GET /api/comments/post/:postId - Get all comments for a post', () => {
 
         const response = await request(app)
             .get(`/api/comments/post/${post1._id}`)
-            .expect(200);
+            .expect(StatusCodes.OK);
 
         expect(response.body.data.length).toBe(1);
         expect(response.body.data[0].content).toBe('Comment for post 1');

@@ -1,14 +1,15 @@
 import request from 'supertest';
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
-import postRouter from '../post.router.js';
-import { Post } from '../post.model.js';
+import { StatusCodes } from 'http-status-codes';
+import postRouter from '../post.router';
+import { Post } from '../post.model';
 import {
     mockPostMultiple,
     mockPostOlder,
     mockPostNewer,
     mockPost
-} from '../../mocks.js';
+} from '../../mocks';
 
 describe('GET /api/posts - Get all posts', () => {
   let app: Express;
@@ -32,7 +33,7 @@ describe('GET /api/posts - Get all posts', () => {
   it('should return empty array when no posts exist', async () => {
     const response = await request(app)
       .get('/api/posts')
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body).toHaveProperty('data');
     expect(response.body.data).toEqual([]);
@@ -43,7 +44,7 @@ describe('GET /api/posts - Get all posts', () => {
 
     const response = await request(app)
       .get('/api/posts')
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body).toHaveProperty('data');
     expect(Array.isArray(response.body.data)).toBe(true);
@@ -55,7 +56,7 @@ describe('GET /api/posts - Get all posts', () => {
 
     const response = await request(app)
       .get('/api/posts')
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body.data.length).toBe(2);
     expect(response.body.data[0].title).toBe('Newer Post');
@@ -67,7 +68,7 @@ describe('GET /api/posts - Get all posts', () => {
 
     const response = await request(app)
       .get('/api/posts')
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body.data.length).toBeGreaterThanOrEqual(1);
     const post = response.body.data[0];

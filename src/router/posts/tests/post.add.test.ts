@@ -1,15 +1,16 @@
 import request from 'supertest';
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
-import postRouter from '../post.router.js';
-import { Post } from '../post.model.js';
+import { StatusCodes } from 'http-status-codes';
+import postRouter from '../post.router';
+import { Post } from '../post.model';
 import {
     mockPostData,
     mockPostDataWithoutPublishDate,
     mockPostWithoutTitle,
     mockPostWithoutContent,
     mockPostWithoutAuthor
-} from '../../mocks.js';
+} from '../../mocks';
 
 describe('POST /api/posts - Add a new post', () => {
   let app: Express;
@@ -36,7 +37,7 @@ describe('POST /api/posts - Add a new post', () => {
     const response = await request(app)
       .post('/api/posts')
       .send(postData)
-      .expect(201);
+      .expect(StatusCodes.CREATED);
 
     expect(response.body).toHaveProperty('message', 'Post created successfully');
     expect(response.body).toHaveProperty('data');
@@ -53,7 +54,7 @@ describe('POST /api/posts - Add a new post', () => {
     await request(app)
       .post('/api/posts')
       .send(postData)
-      .expect(500);
+      .expect(StatusCodes.INTERNAL_SERVER_ERROR);
   });
 
   it('should fail when content is missing', async () => {
@@ -62,7 +63,7 @@ describe('POST /api/posts - Add a new post', () => {
     await request(app)
       .post('/api/posts')
       .send(postData)
-      .expect(500);
+      .expect(StatusCodes.INTERNAL_SERVER_ERROR);
   });
 
   it('should fail when author is missing', async () => {
@@ -71,7 +72,7 @@ describe('POST /api/posts - Add a new post', () => {
     await request(app)
       .post('/api/posts')
       .send(postData)
-      .expect(500);
+      .expect(StatusCodes.INTERNAL_SERVER_ERROR);
   });
 
   it('should use default publishDate when not provided', async () => {
@@ -80,7 +81,7 @@ describe('POST /api/posts - Add a new post', () => {
     const response = await request(app)
       .post('/api/posts')
       .send(postData)
-      .expect(201);
+      .expect(StatusCodes.CREATED);
 
     expect(response.body.data).toHaveProperty('publishDate');
     expect(new Date(response.body.data.publishDate)).toBeInstanceOf(Date);

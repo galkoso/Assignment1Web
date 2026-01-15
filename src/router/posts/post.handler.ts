@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { Post } from './post.model.js';
-import { IPost } from './post.schema.js';
+import { Post } from './post.model';
+import { IPost } from './post.schema';
 
 export const addPost = async (req: Request, res: Response): Promise<void> => {
     try {

@@ -5,7 +5,7 @@ import {
     getCommentsByPostId,
     updateComment,
     deleteComment
-} from './comment.handler.js';
+} from './comment.handler';
 
 const router = Router();
 

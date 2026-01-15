@@ -1,8 +1,9 @@
 import request from 'supertest';
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
-import postRouter from '../post.router.js';
-import { Post } from '../post.model.js';
+import { StatusCodes } from 'http-status-codes';
+import postRouter from '../post.router';
+import { Post } from '../post.model';
 import {
     mockPostByJohn,
     mockPostByJane,
@@ -11,7 +12,7 @@ import {
     mockPostNewerByJohn,
     mockPostWithSpaces,
     mockPostMultiple
-} from '../../mocks.js';
+} from '../../mocks';
 
 describe('GET /api/posts?sender=<sender_id> - Get posts by sender', () => {
   let app: Express;
@@ -41,7 +42,7 @@ describe('GET /api/posts?sender=<sender_id> - Get posts by sender', () => {
 
     const response = await request(app)
       .get('/api/posts?sender=John Doe')
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body).toHaveProperty('data');
     expect(Array.isArray(response.body.data)).toBe(true);
@@ -56,7 +57,7 @@ describe('GET /api/posts?sender=<sender_id> - Get posts by sender', () => {
 
     const response = await request(app)
       .get('/api/posts?sender=NonExistent Author')
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body).toHaveProperty('data');
     expect(response.body.data).toEqual([]);
@@ -70,7 +71,7 @@ describe('GET /api/posts?sender=<sender_id> - Get posts by sender', () => {
 
     const response = await request(app)
       .get('/api/posts?sender=John Doe')
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body.data.length).toBe(2);
     expect(response.body.data[0].title).toBe('Newer Post by John');
@@ -82,7 +83,7 @@ describe('GET /api/posts?sender=<sender_id> - Get posts by sender', () => {
 
     const response = await request(app)
       .get('/api/posts')
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body.data.length).toBe(2);
   });
@@ -92,7 +93,7 @@ describe('GET /api/posts?sender=<sender_id> - Get posts by sender', () => {
 
     const response = await request(app)
       .get('/api/posts?sender=Author with Spaces')
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body.data.length).toBe(1);
     expect(response.body.data[0].author).toBe('Author with Spaces');

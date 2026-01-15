@@ -1,9 +1,10 @@
 import request from 'supertest';
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
-import commentRouter from '../comment.router.js';
-import { Comment } from '../comment.model.js';
-import { Post } from '../../posts/post.model.js';
+import { StatusCodes } from 'http-status-codes';
+import commentRouter from '../comment.router';
+import { Comment } from '../comment.model';
+import { Post } from '../../posts/post.model';
 import {
     mockPost,
     mockCommentData,
@@ -11,7 +12,7 @@ import {
     mockCommentWithoutPostId,
     mockCommentWithoutContent,
     mockInvalidPostId
-} from '../../mocks.js';
+} from '../../mocks';
 
 describe('POST /api/comments - Create a new comment', () => {
     let app: Express;
@@ -39,7 +40,7 @@ describe('POST /api/comments - Create a new comment', () => {
         const response = await request(app)
             .post('/api/comments')
             .send(commentData)
-            .expect(201);
+            .expect(StatusCodes.CREATED);
 
         expect(response.body).toHaveProperty('message', 'Comment created successfully');
         expect(response.body).toHaveProperty('data');
@@ -60,7 +61,7 @@ describe('POST /api/comments - Create a new comment', () => {
         await request(app)
             .post('/api/comments')
             .send(commentData)
-            .expect(400);
+            .expect(StatusCodes.BAD_REQUEST);
     });
 
     it('should fail when postId is missing', async () => {
@@ -69,7 +70,7 @@ describe('POST /api/comments - Create a new comment', () => {
         await request(app)
             .post('/api/comments')
             .send(commentData)
-            .expect(400);
+            .expect(StatusCodes.BAD_REQUEST);
     });
 
     it('should fail when content is missing', async () => {
@@ -83,7 +84,7 @@ describe('POST /api/comments - Create a new comment', () => {
         await request(app)
             .post('/api/comments')
             .send(commentData)
-            .expect(400);
+            .expect(StatusCodes.BAD_REQUEST);
     });
 
     it('should fail when post does not exist', async () => {
@@ -95,6 +96,6 @@ describe('POST /api/comments - Create a new comment', () => {
         await request(app)
             .post('/api/comments')
             .send(commentData)
-            .expect(404);
+            .expect(StatusCodes.NOT_FOUND);
     });
 });

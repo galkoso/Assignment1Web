@@ -1,14 +1,15 @@
 import request from 'supertest';
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
-import postRouter from '../post.router.js';
-import { Post } from '../post.model.js';
+import { StatusCodes } from 'http-status-codes';
+import postRouter from '../post.router';
+import { Post } from '../post.model';
 import {
     mockPostOriginal,
     mockPostUpdated,
     mockPostUpdatedPartial,
     mockPostUpdatedTitleOnly
-} from '../../mocks.js';
+} from '../../mocks';
 
 describe('PUT /api/posts/:postId - Update a post', () => {
   let app: Express;
@@ -37,7 +38,7 @@ describe('PUT /api/posts/:postId - Update a post', () => {
     const response = await request(app)
       .put(`/api/posts/${createdPost._id.toString()}`)
       .send(updateData)
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body).toHaveProperty('message', 'Post updated successfully');
     expect(response.body).toHaveProperty('updatedPost');
@@ -54,7 +55,7 @@ describe('PUT /api/posts/:postId - Update a post', () => {
     const response = await request(app)
       .put(`/api/posts/${fakeId.toString()}`)
       .send(updateData)
-      .expect(404);
+      .expect(StatusCodes.NOT_FOUND);
 
     expect(response.body).toHaveProperty('error', 'Post not found');
   });
@@ -67,7 +68,7 @@ describe('PUT /api/posts/:postId - Update a post', () => {
     const response = await request(app)
       .put(`/api/posts/${createdPost._id.toString()}`)
       .send(updateData)
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body.updatedPost.title).toBe('Updated Title');
     expect(response.body.updatedPost.content).toBe('Updated content');
@@ -85,7 +86,7 @@ describe('PUT /api/posts/:postId - Update a post', () => {
     const response = await request(app)
       .put('/api/posts/invalid-id')
       .send(updateData)
-      .expect(500);
+      .expect(StatusCodes.INTERNAL_SERVER_ERROR);
 
     expect(response.body).toHaveProperty('error', 'Failed to update post');
   });
@@ -98,7 +99,7 @@ describe('PUT /api/posts/:postId - Update a post', () => {
     await request(app)
       .put(`/api/posts/${createdPost._id.toString()}`)
       .send(updateData)
-      .expect(500);
+      .expect(StatusCodes.INTERNAL_SERVER_ERROR);
   });
 
   it('should maintain post ID after update', async () => {
@@ -111,7 +112,7 @@ describe('PUT /api/posts/:postId - Update a post', () => {
     const response = await request(app)
       .put(`/api/posts/${createdPost._id.toString()}`)
       .send(updateData)
-      .expect(200);
+      .expect(StatusCodes.OK);
 
     expect(response.body.updatedPost._id.toString()).toBe(originalId);
   });

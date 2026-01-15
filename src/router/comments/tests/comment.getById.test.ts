@@ -1,14 +1,15 @@
 import request from 'supertest';
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
-import commentRouter from '../comment.router.js';
-import { Comment } from '../comment.model.js';
-import { Post } from '../../posts/post.model.js';
+import { StatusCodes } from 'http-status-codes';
+import commentRouter from '../comment.router';
+import { Comment } from '../comment.model';
+import { Post } from '../../posts/post.model';
 import {
     mockPost,
     mockComment,
     mockInvalidCommentId
-} from '../../mocks.js';
+} from '../../mocks';
 
 describe('GET /api/comments/:id - Get a comment by ID', () => {
     let app: Express;
@@ -41,7 +42,7 @@ describe('GET /api/comments/:id - Get a comment by ID', () => {
 
         const response = await request(app)
             .get(`/api/comments/${comment._id}`)
-            .expect(200);
+            .expect(StatusCodes.OK);
 
         expect(response.body).toHaveProperty('data');
         expect(response.body.data).toHaveProperty('_id', comment._id.toString());
@@ -52,12 +53,12 @@ describe('GET /api/comments/:id - Get a comment by ID', () => {
     it('should return 404 when comment does not exist', async () => {
         await request(app)
             .get(`/api/comments/${mockInvalidCommentId}`)
-            .expect(404);
+            .expect(StatusCodes.NOT_FOUND);
     });
 
     it('should return 404 for invalid ID format', async () => {
         await request(app)
             .get('/api/comments/invalid-id')
-            .expect(500);
+            .expect(StatusCodes.INTERNAL_SERVER_ERROR);
     });
 });

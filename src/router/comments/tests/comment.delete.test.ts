@@ -1,16 +1,17 @@
 import request from 'supertest';
 import express, { Express } from 'express';
 import mongoose from 'mongoose';
-import commentRouter from '../comment.router.js';
-import { Comment } from '../comment.model.js';
-import { Post } from '../../posts/post.model.js';
+import { StatusCodes } from 'http-status-codes';
+import commentRouter from '../comment.router';
+import { Comment } from '../comment.model';
+import { Post } from '../../posts/post.model';
 import {
     mockPost,
     mockCommentToDelete,
     mockComment1,
     mockComment2,
     mockInvalidCommentId
-} from '../../mocks.js';
+} from '../../mocks';
 
 describe('DELETE /api/comments/:id - Delete a comment', () => {
     let app: Express;
@@ -37,7 +38,7 @@ describe('DELETE /api/comments/:id - Delete a comment', () => {
 
         const response = await request(app)
             .delete(`/api/comments/${comment._id}`)
-            .expect(200);
+            .expect(StatusCodes.OK);
 
         expect(response.body).toHaveProperty('message', 'Comment deleted successfully');
 
@@ -48,7 +49,7 @@ describe('DELETE /api/comments/:id - Delete a comment', () => {
     it('should return 404 when comment does not exist', async () => {
         await request(app)
             .delete(`/api/comments/${mockInvalidCommentId}`)
-            .expect(404);
+            .expect(StatusCodes.NOT_FOUND);
     });
 
     it('should only delete the specified comment', async () => {
@@ -66,7 +67,7 @@ describe('DELETE /api/comments/:id - Delete a comment', () => {
 
         await request(app)
             .delete(`/api/comments/${comment1._id}`)
-            .expect(200);
+            .expect(StatusCodes.OK);
 
         const deletedComment = await Comment.findById(comment1._id);
         expect(deletedComment).toBeNull();
