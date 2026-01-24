@@ -70,38 +70,38 @@ export const mockPostComplete = {
     publishDate: new Date('2024-01-15')
 };
 
-export const mockPostByJohn = {
-    title: 'Post by John',
-    content: 'Content by John',
-    author: 'John Doe',
+export const mockPostByGal = {
+    title: 'Post by Gal',
+    content: 'Content by Gal',
+    author: 'Gal Kosover',
     publishDate: new Date('2024-01-15')
 };
 
-export const mockPostByJane = {
-    title: 'Post by Jane',
-    content: 'Content by Jane',
-    author: 'Jane Doe',
+export const mockPostByDan = {
+    title: 'Post by Dan',
+    content: 'Content by Dan',
+    author: 'Dan Doe',
     publishDate: new Date('2024-01-16')
 };
 
-export const mockPostAnotherByJohn = {
-    title: 'Another Post by John',
-    content: 'Another content by John',
-    author: 'John Doe',
+export const mockPostAnotherByGal = {
+    title: 'Another Post by Gal',
+    content: 'Another content by Gal',
+    author: 'Gal Kosover',
     publishDate: new Date('2024-01-17')
 };
 
-export const mockPostOlderByJohn = {
-    title: 'Older Post by John',
+export const mockPostOlderByGal = {
+    title: 'Older Post by Gal',
     content: 'Older content',
-    author: 'John Doe',
+    author: 'Gal Kosover',
     publishDate: new Date('2024-01-10')
 };
 
-export const mockPostNewerByJohn = {
-    title: 'Newer Post by John',
+export const mockPostNewerByGal = {
+    title: 'Newer Post by Gal',
     content: 'Newer content',
-    author: 'John Doe',
+    author: 'Gal Kosover',
     publishDate: new Date('2024-01-20')
 };
 
