@@ -39,7 +39,7 @@ Content-Type: application/json
 }
 
 ### GET Get a comment by ID
-GET {{baseUrl}}/api/comments/6974f0ad791bab619f36b2d9
+GET {{baseUrl}}/api/comments/6974f114791bab619f36b2f1
 Content-Type: application/json
 
 ### GET Get all comments for a specific post
@@ -55,5 +55,5 @@ Content-Type: application/json
 }
 
 ### DELETE Delete a comment
-DELETE {{baseUrl}}/api/comments/6974f0ad791bab619f36b2d9
+DELETE {{baseUrl}}/api/comments/6974f114791bab619f36b2f1
 Content-Type: application/json
