@@ -47,7 +47,7 @@ GET {{baseUrl}}/api/comments/post/6974f06f791bab619f36b2cb
 Content-Type: application/json
 
 ### PUT Update a comment
-PUT {{baseUrl}}/api/comments/6974f0ad791bab619f36b2d9
+PUT {{baseUrl}}/api/comments/6974f114791bab619f36b2f1
 Content-Type: application/json
 
 {
