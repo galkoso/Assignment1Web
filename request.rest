@@ -21,7 +21,7 @@ GET {{baseUrl}}/api/posts
 Content-Type: application/json
 
 ### GET Get a post by ID
-GET {{baseUrl}}/api/posts/6961187b611dffd3feb277f2
+GET {{baseUrl}}/api/posts/6974f06f791bab619f36b2cb
 Content-Type: application/json
 
 ### GET Get posts by sender
@@ -34,20 +34,20 @@ Content-Type: application/json
 
 {
   "owner": "Gal kosover",
-  "postId": "6961187b611dffd3feb277f2",
+  "postId": "6974f06f791bab619f36b2cb",
   "content": "This is a great post!"
 }
 
 ### GET Get a comment by ID
-GET {{baseUrl}}/api/comments/6974e8c402d1ba4d2a658368
+GET {{baseUrl}}/api/comments/6974f0ad791bab619f36b2d9
 Content-Type: application/json
 
 ### GET Get all comments for a specific post
-GET {{baseUrl}}/api/comments/post/6961187b611dffd3feb277f2
+GET {{baseUrl}}/api/comments/post/6974f06f791bab619f36b2cb
 Content-Type: application/json
 
 ### PUT Update a comment
-PUT {{baseUrl}}/api/comments/6974e8c402d1ba4d2a658368
+PUT {{baseUrl}}/api/comments/6974f0ad791bab619f36b2d9
 Content-Type: application/json
 
 {
@@ -55,5 +55,5 @@ Content-Type: application/json
 }
 
 ### DELETE Delete a comment
-DELETE {{baseUrl}}/api/comments/6974e8c402d1ba4d2a658368
+DELETE {{baseUrl}}/api/comments/6974f0ad791bab619f36b2d9
 Content-Type: application/json
