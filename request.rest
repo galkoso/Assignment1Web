@@ -2,10 +2,6 @@
 @baseUrl = http://localhost:3000
 
 ### GET Welcome endpoint
-GET {{baseUrl}}/
-Content-Type: application/json
-
-### GET Health check endpoint
 GET {{baseUrl}}/health
 Content-Type: application/json
 
@@ -16,7 +12,7 @@ Content-Type: application/json
 {
   "title": "My First Post",
   "content": "This is the content of my first post.",
-  "author": "John Doe",
+  "author": "Gal kosover",
   "publishDate": "2024-01-15T10:00:00.000Z"
 }
 
@@ -25,11 +21,11 @@ GET {{baseUrl}}/api/posts
 Content-Type: application/json
 
 ### GET Get a post by ID
-GET {{baseUrl}}/api/posts/507f1f77bcf86cd799439011
+GET {{baseUrl}}/api/posts/6961187b611dffd3feb277f2
 Content-Type: application/json
 
 ### GET Get posts by sender
-GET {{baseUrl}}/api/posts?sender=John Doe
+GET {{baseUrl}}/api/posts?sender=Gal kosover
 Content-Type: application/json
 
 ### POST Create a new comment
@@ -37,21 +33,21 @@ POST {{baseUrl}}/api/comments
 Content-Type: application/json
 
 {
-  "owner": "Jane Smith",
-  "postId": "507f1f77bcf86cd799439011",
+  "owner": "Gal kosover",
+  "postId": "6961187b611dffd3feb277f2",
   "content": "This is a great post!"
 }
 
 ### GET Get a comment by ID
-GET {{baseUrl}}/api/comments/507f1f77bcf86cd799439011
+GET {{baseUrl}}/api/comments/6974e8c402d1ba4d2a658368
 Content-Type: application/json
 
 ### GET Get all comments for a specific post
-GET {{baseUrl}}/api/comments/post/507f1f77bcf86cd799439011
+GET {{baseUrl}}/api/comments/post/6961187b611dffd3feb277f2
 Content-Type: application/json
 
 ### PUT Update a comment
-PUT {{baseUrl}}/api/comments/507f1f77bcf86cd799439011
+PUT {{baseUrl}}/api/comments/6974e8c402d1ba4d2a658368
 Content-Type: application/json
 
 {
@@ -59,5 +55,5 @@ Content-Type: application/json
 }
 
 ### DELETE Delete a comment
-DELETE {{baseUrl}}/api/comments/507f1f77bcf86cd799439011
+DELETE {{baseUrl}}/api/comments/6974e8c402d1ba4d2a658368
 Content-Type: application/json
